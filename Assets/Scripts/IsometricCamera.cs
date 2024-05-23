@@ -5,7 +5,7 @@ using UnityEngine;
 public class IsometricCamera : MonoBehaviour
 {
     public Transform player;
-    public Vector3 offset = new Vector3(0, 10, -10); 
+    public Vector3 offset = new Vector3(0, 10, 1); 
     public float smoothSpeed = 0.125f; 
 
     void LateUpdate()
