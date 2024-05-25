@@ -20,19 +20,17 @@ public class GrabBox : MonoBehaviour
         if (currentBox != null)
         {
             // Pegar la caja al jugador
-            Debug.Log("Caja pegada al jugador");
-            Rigidbody rb = currentBox.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-            }
-
-            // Crear o actualizar el objeto padre combinado
             if (combinedParent == null)
             {
                 combinedParent = new GameObject("CombinedParent").transform;
                 combinedParent.position = player.position;
                 player.SetParent(combinedParent);
                 currentBox.transform.SetParent(combinedParent);
+                Rigidbody rb = currentBox.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.isKinematic = true; // Desactivar física de la caja
+                }
             }
             else
             {

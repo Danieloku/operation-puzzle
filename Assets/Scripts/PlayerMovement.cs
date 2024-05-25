@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
     public float moveDistance = 1.0f; // Distancia de movimiento (debería ser igual al tamaño de un tile)
-    public float moveSpeed = 5.0f; // Velocidad de movimiento
     private Vector3 targetPosition;
     private bool isMoving = false;
 
@@ -18,45 +15,66 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isMoving)
         {
+            Vector3 direction = Vector3.zero;
+
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                Move(Vector3.back);
+                direction = Vector3.back; // Invertido
             }
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                Move(Vector3.forward);
+                direction = Vector3.forward; // Invertido
             }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                Move(Vector3.right);
+                direction = Vector3.right; // Invertido
             }
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                Move(Vector3.left);
+                direction = Vector3.left; // Invertido
             }
-        }
 
-        // Mover el jugador hacia la posición objetivo
-        if (isMoving)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-            if (Vector3.Distance(transform.position, targetPosition) < 0.001f)
+            if (direction != Vector3.zero)
             {
-                transform.position = targetPosition;
-                isMoving = false;
+                Vector3 newPosition = targetPosition + direction * moveDistance;
+                if (CanMoveTo(newPosition))
+                {
+                    StartCoroutine(MoveTo(newPosition));
+                }
             }
         }
     }
 
-    void Move(Vector3 direction)
+    private bool CanMoveTo(Vector3 position)
     {
-        // Verificar colisiones antes de mover
-        RaycastHit hit;
-        if (!Physics.Raycast(transform.position, direction, out hit, moveDistance))
+        // Verifica si el jugador puede moverse a la nueva posición (por ejemplo, no hay obstáculos)
+        Collider[] hitColliders = Physics.OverlapBox(position, new Vector3(0.45f, 0.45f, 0.45f));
+        foreach (Collider collider in hitColliders)
         {
-            targetPosition += direction * moveDistance;
-            isMoving = true;
+            if (!collider.CompareTag("Player") && !collider.CompareTag("Ground"))
+            {
+                return false;
+            }
         }
+        return true;
+    }
+
+    private System.Collections.IEnumerator MoveTo(Vector3 position)
+    {
+        isMoving = true;
+        float elapsedTime = 0;
+        float duration = 0.1f; // Tiempo para completar el movimiento
+        Vector3 startPosition = transform.position;
+
+        while (elapsedTime < duration)
+        {
+            transform.position = Vector3.Lerp(startPosition, position, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = position;
+        targetPosition = position;
+        isMoving = false;
     }
 }

@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Div Sign Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 5355115242035035376, guid: 55c448a1b3c2bf54694ec9a5b22e35ef, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7639368046685422688, guid: 55c448a1b3c2bf54694ec9a5b22e35ef, type: 3}
     m_RemovedGameObjects: []
@@ -87,4 +91,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveDistance: 1
-  moveSpeed: 5
