@@ -1,11 +1,9 @@
 using UnityEngine;
-
 public class GrabBox : MonoBehaviour
 {
     public Transform player; // Referencia al jugador
     private GameObject currentBox = null; // Referencia a la caja actual
     private Transform combinedParent; // Objeto padre combinado
-
     void Start()
     {
         // Asignar la referencia del jugador automáticamente si no se ha asignado en el Inspector
@@ -14,7 +12,6 @@ public class GrabBox : MonoBehaviour
             player = GameObject.FindWithTag("Player").transform;
         }
     }
-
     void Update()
     {
         if (currentBox != null)
@@ -38,7 +35,6 @@ public class GrabBox : MonoBehaviour
             }
         }
     }
-
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Box"))

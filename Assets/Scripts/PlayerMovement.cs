@@ -6,11 +6,12 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 targetPosition;
     private bool isMoving = false;
 
+
+  
     void Start()
     {
         targetPosition = transform.position;
     }
-
     void Update()
     {
         if (!isMoving)
